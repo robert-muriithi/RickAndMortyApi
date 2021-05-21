@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,21 +26,20 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler);
 
 
-        MarsApi marsApi = new MarsApi();
-        marsApi.apiService.getRepository().enqueue(new Callback<List<DataModel>>(){
-
+        RickyAndMortyApi rickyAndMortyApi = new RickyAndMortyApi();
+        rickyAndMortyApi.apiService.getRepository().enqueue(new Callback<RickyMorty>() {
             @Override
-            public void onResponse(Call<List<DataModel>> call, Response<List<DataModel>> response) {
+            public void onResponse(Call<RickyMorty> call, Response<RickyMorty> response) {
                 adapter = new RecyclerAdapter(response.body());
-                Log.d(TAG, "onResponse: "+response.body().size());
                 recyclerView.setAdapter(adapter);
             }
 
             @Override
-            public void onFailure(Call<List<DataModel>> call, Throwable t) {
-                textView.setText(t.getLocalizedMessage());
+            public void onFailure(Call<RickyMorty> call, Throwable t) {
+                Log.d(TAG, "onFailure: "+t.getLocalizedMessage());
             }
         });
+
     }
 }
 

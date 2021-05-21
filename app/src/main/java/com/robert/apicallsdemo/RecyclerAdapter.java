@@ -3,19 +3,22 @@ package com.robert.apicallsdemo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
-    List<DataModel> arrayList;
+    RickyMorty arrayList;
 
-    public RecyclerAdapter(List<DataModel> arrayList) {
+    public RecyclerAdapter(RickyMorty arrayList) {
         this.arrayList = arrayList;
     }
 
@@ -28,23 +31,33 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.name.setText(arrayList.get(position).name);
-        holder.full_name.setText(arrayList.get(position).full_name);
+        holder.name.setText(arrayList.getResults().get(position).getName());
+        holder.species.setText(arrayList.getResults().get(position).getSpecies());
+        holder.status.setText(arrayList.getResults().get(position).getStatus());
+
+        Glide.with(holder.itemView)
+                .load(arrayList.getResults().get(position).getImage())
+                .fitCenter()
+                .into(holder.image);
     }
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return arrayList.getResults().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;
-        TextView full_name;
+        TextView status;
+        TextView species;
+        ImageView image;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
-            full_name = itemView.findViewById(R.id.fullName);
+            image = itemView.findViewById(R.id.image);
+            species = itemView.findViewById(R.id.species);
+            status = itemView.findViewById(R.id.status);
         }
     }
 }
